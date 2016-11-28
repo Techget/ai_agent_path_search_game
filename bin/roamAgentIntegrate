@@ -1,0 +1,441 @@
+//return moveAccordingToDesignatedRoute
+private char roamAgent(){
+	if(stack.size()==1){ //means go back to original point, the use of prevLocation has NullPointerException
+		char symbnorth=this.map.getSymbol(this.currentLocation.getX(),this.currentLocation.getY()+1);
+		char symbsouth=this.map.getSymbol(this.currentLocation.getX(),this.currentLocation.getY()-1);
+		char symbeast=this.map.getSymbol(this.currentLocation.getX()+1,this.currentLocation.getY());			
+		char symbwest=this.map.getSymbol(this.currentLocation.getX()-1,this.currentLocation.getY());
+	
+		MapCoordinate maybeNextLocation=null;
+		maybeNextLocation=new MapCoordinate(this.currentLocation.getX(),this.currentLocation.getY()+1); //maybe north
+		if(!this.hasBeenTo.contains(maybeNextLocation)&&symbnorth!='*'&&symbnorth!='~'){
+			if(symbnorth=='T'){ 
+				if(this.hasAxe){ //means could be there,has axe have some effect
+					ArrayList<MapCoordinate> temp = new ArrayList<MapCoordinate>();
+					temp.add(maybeNextLocation);
+					designatedRoute.clear();
+					designatedRoute.addAll(temp);
+					return moveAccordingToDesignatedRoute();
+				}
+			}else if(symbnorth=='-'){
+				if(this.hasKey){ //means could be there
+					ArrayList<MapCoordinate> temp = new ArrayList<MapCoordinate>();
+					temp.add(maybeNextLocation);
+					designatedRoute.clear();
+					designatedRoute.addAll(temp);
+					return moveAccordingToDesignatedRoute();
+				}
+			}else if(symbnorth==' '||symbnorth=='O'){//means could go straightforward
+				ArrayList<MapCoordinate> temp = new ArrayList<MapCoordinate>();
+				temp.add(maybeNextLocation);
+				designatedRoute.clear();
+				designatedRoute.addAll(temp);
+				return moveAccordingToDesignatedRoute();
+			}		
+		}
+		
+		maybeNextLocation=new MapCoordinate(this.currentLocation.getX(),this.currentLocation.getY()-1); //maybe south
+		if(!this.hasBeenTo.contains(maybeNextLocation)&&symbsouth!='*'&&symbsouth!='~'){
+			if(symbsouth=='T'){ //has axe have some effect
+				if(this.hasAxe){ //means could be there
+					ArrayList<MapCoordinate> temp = new ArrayList<MapCoordinate>();
+					temp.add(maybeNextLocation);
+					designatedRoute.clear();
+					designatedRoute.addAll(temp);
+					return moveAccordingToDesignatedRoute();
+				}
+			}else if(symbsouth=='-'){
+				if(this.hasKey){ //means could be there
+					ArrayList<MapCoordinate> temp = new ArrayList<MapCoordinate>();
+					temp.add(maybeNextLocation);
+					designatedRoute.clear();
+					designatedRoute.addAll(temp);
+					return moveAccordingToDesignatedRoute();
+				}
+			}else if(symbsouth==' '||symbsouth=='O'){//means could go straightforward
+				ArrayList<MapCoordinate> temp = new ArrayList<MapCoordinate>();
+				temp.add(maybeNextLocation);
+				designatedRoute.clear();
+				designatedRoute.addAll(temp);
+				return moveAccordingToDesignatedRoute();
+			}		
+		}
+		
+		maybeNextLocation=new MapCoordinate(this.currentLocation.getX()+1,this.currentLocation.getY()); //maybe east
+		if(!this.hasBeenTo.contains(maybeNextLocation)&&symbeast!='*'&&symbeast!='~'){
+			if(symbeast=='T'){ //has axe have some effect
+				if(this.hasAxe){ //means could be there
+					ArrayList<MapCoordinate> temp = new ArrayList<MapCoordinate>();
+					temp.add(maybeNextLocation);
+					designatedRoute.clear();
+					designatedRoute.addAll(temp);
+					return moveAccordingToDesignatedRoute();
+				}
+			}else if(symbeast=='-'){
+				if(this.hasKey){ //means could be there
+					ArrayList<MapCoordinate> temp = new ArrayList<MapCoordinate>();
+					temp.add(maybeNextLocation);
+					designatedRoute.clear();
+					designatedRoute.addAll(temp);
+					return moveAccordingToDesignatedRoute();
+				}
+			}else if(symbeast==' '||symbeast=='O'){//means could go straightforward
+				ArrayList<MapCoordinate> temp = new ArrayList<MapCoordinate>();
+				temp.add(maybeNextLocation);
+				designatedRoute.clear();
+				designatedRoute.addAll(temp);
+				return moveAccordingToDesignatedRoute();
+			}		
+		}
+		
+		maybeNextLocation=new MapCoordinate(this.currentLocation.getX()-1,this.currentLocation.getY()); //maybe west
+		if(!this.hasBeenTo.contains(maybeNextLocation)&&symbwest!='*'&&symbwest!='~'){
+			if(symbwest=='T'){ //has axe have some effect
+				if(this.hasAxe){ //means could be there
+					ArrayList<MapCoordinate> temp = new ArrayList<MapCoordinate>();
+					temp.add(maybeNextLocation);
+					designatedRoute.clear();
+					designatedRoute.addAll(temp);
+					return moveAccordingToDesignatedRoute();
+				}
+			}else if(symbwest=='-'){
+				if(this.hasKey){ //means could be there
+					ArrayList<MapCoordinate> temp = new ArrayList<MapCoordinate>();
+					temp.add(maybeNextLocation);
+					designatedRoute.clear();
+					designatedRoute.addAll(temp);
+					return moveAccordingToDesignatedRoute();
+				}
+			}else if(symbwest==' '||symbwest=='O'){//means could go straightforward
+				ArrayList<MapCoordinate> temp = new ArrayList<MapCoordinate>();
+				temp.add(maybeNextLocation);
+				designatedRoute.clear();
+				designatedRoute.addAll(temp);
+				return moveAccordingToDesignatedRoute();
+			}		
+		}
+		
+		//locate at original point but has nowhere to roam, means some thing wrong
+		System.out.println("something wrong with roamAgent(),maybe need to roam across river");
+		Thread.sleep(1000);
+		return null;
+	}else{ //could use prevLocation
+		char symbnorth=this.map.getSymbol(this.currentLocation.getX(),this.currentLocation.getY()+1);
+		char symbsouth=this.map.getSymbol(this.currentLocation.getX(),this.currentLocation.getY()-1);
+		char symbeast=this.map.getSymbol(this.currentLocation.getX()+1,this.currentLocation.getY());			
+		char symbwest=this.map.getSymbol(this.currentLocation.getX()-1,this.currentLocation.getY());
+		
+		MapCoordinate prevLocation=stack.get(1);
+		MapCoordinate maybeNextLocation=null;
+		
+		maybeNextLocation=new MapCoordinate(this.currentLocation.getX(),this.currentLocation.getY()+1); //maybe north
+		if(!this.hasBeenTo.contains(maybeNextLocation)&&!prevLocation.equals(maybeNextLocation)&&
+			symbnorth!='*'&&symbnorth!='~'){
+			if(symbnorth=='T'){ //has axe have some effect
+				if(this.hasAxe){ //means could be there
+					ArrayList<MapCoordinate> temp = new ArrayList<MapCoordinate>();
+					temp.add(maybeNextLocation);
+					designatedRoute.clear();
+					designatedRoute.addAll(temp);
+					return moveAccordingToDesignatedRoute();
+				}
+			}else if(symbnorth=='-'){
+				if(this.hasKey){ //means could be there
+					ArrayList<MapCoordinate> temp = new ArrayList<MapCoordinate>();
+					temp.add(maybeNextLocation);
+					designatedRoute.clear();
+					designatedRoute.addAll(temp);
+					return moveAccordingToDesignatedRoute();
+				}
+			}else if(symbnorth==' '||symbnorth=='O'){//means could go straightforward
+				ArrayList<MapCoordinate> temp = new ArrayList<MapCoordinate>();
+				temp.add(maybeNextLocation);
+				designatedRoute.clear();
+				designatedRoute.addAll(temp);
+				return moveAccordingToDesignatedRoute();
+			}		
+		}
+		
+		maybeNextLocation=new MapCoordinate(this.currentLocation.getX(),this.currentLocation.getY()-1); //maybe south
+		if(!this.hasBeenTo.contains(maybeNextLocation)&&!prevLocation.equals(maybeNextLocation)&&
+			symbsouth!='*'&&symbsouth!='~'){
+			if(symbsouth=='T'){ //has axe have some effect
+				if(this.hasAxe){ //means could be there
+					ArrayList<MapCoordinate> temp = new ArrayList<MapCoordinate>();
+					temp.add(maybeNextLocation);
+					designatedRoute.clear();
+					designatedRoute.addAll(temp);
+					return moveAccordingToDesignatedRoute();
+				}
+			}else if(symbsouth=='-'){
+				if(this.hasKey){ //means could be there
+					ArrayList<MapCoordinate> temp = new ArrayList<MapCoordinate>();
+					temp.add(maybeNextLocation);
+					designatedRoute.clear();
+					designatedRoute.addAll(temp);
+					return moveAccordingToDesignatedRoute();
+				}
+			}else if(symbsouth==' '||symbsouth=='O'){//means could go straightforward
+				ArrayList<MapCoordinate> temp = new ArrayList<MapCoordinate>();
+				temp.add(maybeNextLocation);
+				designatedRoute.clear();
+				designatedRoute.addAll(temp);
+				return moveAccordingToDesignatedRoute();
+			}		
+		}
+		
+		maybeNextLocation=new MapCoordinate(this.currentLocation.getX()+1,this.currentLocation.getY()); //maybe east
+		if(!this.hasBeenTo.contains(maybeNextLocation)&&!prevLocation.equals(maybeNextLocation)&&
+			symbeast!='*'&&symbeast!='~'){
+			if(symbeast=='T'){ //has axe have some effect
+				if(this.hasAxe){ //means could be there
+					ArrayList<MapCoordinate> temp = new ArrayList<MapCoordinate>();
+					temp.add(maybeNextLocation);
+					designatedRoute.clear();
+					designatedRoute.addAll(temp);
+					return moveAccordingToDesignatedRoute();
+				}
+			}else if(symbeast=='-'){
+				if(this.hasKey){ //means could be there
+					ArrayList<MapCoordinate> temp = new ArrayList<MapCoordinate>();
+					temp.add(maybeNextLocation);
+					designatedRoute.clear();
+					designatedRoute.addAll(temp);
+					return moveAccordingToDesignatedRoute();
+				}
+			}else if(symbeast==' '||symbeast=='O'){//means could go straightforward
+				ArrayList<MapCoordinate> temp = new ArrayList<MapCoordinate>();
+				temp.add(maybeNextLocation);
+				designatedRoute.clear();
+				designatedRoute.addAll(temp);
+				return moveAccordingToDesignatedRoute();
+			}		
+		}
+		
+		maybeNextLocation=new MapCoordinate(this.currentLocation.getX()-1,this.currentLocation.getY()); //maybe west
+		if(!this.hasBeenTo.contains(maybeNextLocation)&&!prevLocation.equals(maybeNextLocation)&&
+			symbwest!='*'&&symbwest!='~'){
+			if(symbwest=='T'){ //has axe have some effect
+				if(this.hasAxe){ //means could be there
+					ArrayList<MapCoordinate> temp = new ArrayList<MapCoordinate>();
+					temp.add(maybeNextLocation);
+					designatedRoute.clear();
+					designatedRoute.addAll(temp);
+					return moveAccordingToDesignatedRoute();
+				}
+			}else if(symbwest=='-'){
+				if(this.hasKey){ //means could be there
+					ArrayList<MapCoordinate> temp = new ArrayList<MapCoordinate>();
+					temp.add(maybeNextLocation);
+					designatedRoute.clear();
+					designatedRoute.addAll(temp);
+					return moveAccordingToDesignatedRoute();
+				}
+			}else if(symbwest==' '||symbwest=='O'){//means could go straightforward
+				ArrayList<MapCoordinate> temp = new ArrayList<MapCoordinate>();
+				temp.add(maybeNextLocation);
+				designatedRoute.clear();
+				designatedRoute.addAll(temp);
+				return moveAccordingToDesignatedRoute();
+			}		
+		}
+		
+		//has nowhere to roam, then go back
+		ArrayList<MapCoordinate> temp = new ArrayList<MapCoordinate>();
+		temp.add(prevLocation);
+		this.stack.pop();
+		this.stack.pop(); //pop twice, since the prevLocation will be added when execute 'f' to walk back
+		designatedRoute.clear();
+		designatedRoute.addAll(temp);
+		return moveAccordingToDesignatedRoute();
+	}	
+}
+
+//roaming, but do not go across the river
+		//here not use else{}, the reason is if above action cannot be triggered, must roam
+			//System.out.println(this.currentLocation.getX()+"  "+(this.currentLocation.getY()+1));
+			char symbnorth=this.map.getSymbol(this.currentLocation.getX(),this.currentLocation.getY()+1);
+			//System.out.println(this.currentLocation.getX()+"  "+(this.currentLocation.getY()-1));
+			char symbsouth=this.map.getSymbol(this.currentLocation.getX(),this.currentLocation.getY()-1);
+			//System.out.println((this.currentLocation.getX()+1)+"  "+(this.currentLocation.getY()));
+			char symbeast=this.map.getSymbol(this.currentLocation.getX()+1,this.currentLocation.getY());
+			//System.out.println((this.currentLocation.getX()-1)+"  "+(this.currentLocation.getY()));
+			char symbwest=this.map.getSymbol(this.currentLocation.getX()-1,this.currentLocation.getY());
+			//roam follow previous direction
+			System.out.println("currentDirection: "+this.currentDirection+"symbwest: "+symbwest+"symbnorth: "+symbnorth+
+					"symbeast: "+symbeast+"symbsouth: "+symbsouth);
+			//System.out.println(""+this.currentLocation.getX()+"");
+			if(this.currentDirection=='^'&&symbnorth==' '){
+				execFUpdateAgent();
+				//this.hasBeenTo.add(this.currentLocation);
+				return 'f';
+			}else if(this.currentDirection=='>'&&symbeast==' '){
+				execFUpdateAgent();
+				//this.hasBeenTo.add(this.currentLocation);
+				return 'f';
+			}else if(this.currentDirection=='<'&&symbwest==' '){
+				execFUpdateAgent();
+				//this.hasBeenTo.add(this.currentLocation);
+				return 'f';
+			}else if(this.currentDirection=='v'&& symbsouth==' '){
+				execFUpdateAgent();
+				//this.hasBeenTo.add(this.currentLocation);
+				return 'f';
+			}
+			//roam to north
+			if(!this.hasBeenTo.contains(new MapCoordinate(this.currentLocation.getX(),this.currentLocation.getY()+1))&&
+				symbnorth!='*'&&symbnorth!='~'){
+				if(symbnorth=='T'){ //has axe have some effect
+					if(this.hasAxe){
+						if(this.currentDirection=='^'){
+							return 'c';
+						}else{
+							char tempC=changeDirection(this.currentDirection,'^');
+							execRotateUpdateAgent(tempC);
+							return tempC;
+						}
+					}else{//has no axe but north is T
+						execRotateUpdateAgent('l'); //just turn 
+						return 'l';
+					}
+				}else if(symbnorth=='-'){
+					if(this.hasKey){
+						if(this.currentDirection=='^'){
+							return 'u';
+						}else{
+							char tempC=changeDirection(this.currentDirection,'^');
+							execRotateUpdateAgent(tempC);
+							return tempC;
+						}
+					}else{//has no key but north is -
+						execRotateUpdateAgent('l'); //just turn 
+						return 'l';
+					}
+				}else{//means it is ' '
+					if(this.currentDirection=='^'){
+						execFUpdateAgent();
+						//this.hasBeenTo.add(this.currentLocation);
+						return 'f';
+					}else{
+						execRotateUpdateAgent('l'); //just turn 
+						return 'l';
+					}
+				}
+			}
+			if(!this.hasBeenTo.contains(new MapCoordinate(this.currentLocation.getX(),this.currentLocation.getY()-1))&&
+					symbsouth!='*'&&symbsouth!='~'){ //roam to south
+					if(symbsouth=='T'){ //has axe have some effect
+						if(this.hasAxe){
+							if(this.currentDirection=='v'){
+								return 'c';
+							}else{
+								char tempC=changeDirection(this.currentDirection,'v');
+								execRotateUpdateAgent(tempC);
+								return tempC;
+							}
+						}else{//has no axe but is T
+							execRotateUpdateAgent('l'); //just turn 
+							return 'l';
+						}
+					}else if(symbsouth=='-'){
+						if(this.hasKey){
+							if(this.currentDirection=='v'){
+								return 'u';
+							}else{
+								char tempC=changeDirection(this.currentDirection,'v');
+								execRotateUpdateAgent(tempC);
+								return tempC;
+							}
+						}else{//
+							execRotateUpdateAgent('l'); //just turn 
+							return 'l';
+						}
+					}else{//means it is ' '
+						if(this.currentDirection=='v'){
+							//this.hasBeenTo.add(this.currentLocation);
+							execFUpdateAgent();
+							return 'f';
+						}else{
+							execRotateUpdateAgent('l'); //just turn 
+							return 'l';
+						}
+					}
+			} 
+			if(!this.hasBeenTo.contains(new MapCoordinate(this.currentLocation.getX()+1,this.currentLocation.getY()))&&
+					symbeast!='*'&&symbeast!='~'){ //roam to east
+					if(symbeast=='T'){ //has axe have some effect
+						if(this.hasAxe){
+							if(this.currentDirection=='>'){
+								return 'c';
+							}else{
+								char tempC=changeDirection(this.currentDirection,'>');
+								execRotateUpdateAgent(tempC);
+								return tempC;
+							}
+						}else{//
+							execRotateUpdateAgent('l'); //just turn 
+							return 'l';
+						}
+					}else if(symbeast=='-'){
+						if(this.hasKey){
+							if(this.currentDirection=='>'){
+								return 'u';
+							}else{
+								char tempC=changeDirection(this.currentDirection,'>');
+								execRotateUpdateAgent(tempC);
+								return tempC;
+							}
+						}else{//
+							execRotateUpdateAgent('l'); //just turn 
+							return 'l';
+						}
+					}else{//means it is ' '
+						if(this.currentDirection=='>'){
+							execFUpdateAgent();
+							//this.hasBeenTo.add(this.currentLocation);
+							return 'f';
+						}else{
+							execRotateUpdateAgent('l'); //just turn 
+							return 'l';
+						}
+					}
+			}
+			if(!this.hasBeenTo.contains(new MapCoordinate(this.currentLocation.getX()-1,this.currentLocation.getY()))&&
+					symbwest!='*'&&symbwest!='~'){ //roam to west
+					if(symbwest=='T'){ //has axe have some effect
+						if(this.hasAxe){
+							if(this.currentDirection=='<'){
+								return 'c';
+							}else{
+								char tempC=changeDirection(this.currentDirection,'<');
+								execRotateUpdateAgent(tempC);
+								return tempC;
+							}
+						}else{//
+							execRotateUpdateAgent('l'); //just turn 
+							return 'l';
+						}
+					}else if(symbwest=='-'){
+						if(this.hasKey){
+							if(this.currentDirection=='<'){
+								return 'u';
+							}else{
+								char tempC=changeDirection(this.currentDirection,'<');
+								execRotateUpdateAgent(tempC);
+								return tempC;
+							}
+						}else{//does not have key, cannot go forward anymore,turn around
+							execRotateUpdateAgent('l'); //just turn 
+							return 'l';
+						}
+					}else{//means it is ' '
+						if(this.currentDirection=='<'){
+							//this.hasBeenTo.add(this.currentLocation);
+							execFUpdateAgent();
+							return 'f';
+						}else{
+							execRotateUpdateAgent('l'); //just turn 
+							return 'l';
+						}
+					}
+			}
